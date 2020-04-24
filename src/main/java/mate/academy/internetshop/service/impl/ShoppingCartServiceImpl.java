@@ -20,7 +20,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCart addProduct(ShoppingCart shoppingCart, Product product) {
         shoppingCart.getProducts().add(product);
         return shoppingCartDao.update(shoppingCart);
-        return shoppingCart;
     }
 
     @Override

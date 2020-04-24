@@ -1,7 +1,6 @@
 package mate.academy.internetshop.service.impl;
 
 import java.util.List;
-import mate.academy.internetshop.dao.ProductDao;
 import mate.academy.internetshop.dao.ShoppingCartDao;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.lib.Service;
@@ -14,8 +13,6 @@ import mate.academy.internetshop.service.UserService;
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Inject
     private ShoppingCartDao shoppingCartDao;
-    @Inject
-    private ProductDao productDao;
     @Inject
     private UserService userService;
 

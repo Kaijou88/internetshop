@@ -33,7 +33,7 @@ public class UserDaoImpl implements UserDao {
         IntStream.range(0, Storage.users.size())
                 .filter(u -> user.getId().equals(Storage.users.get(u).getId()))
                 .forEach(u -> Storage.users.set(u, user));
-        return null;
+        return user;
     }
 
     @Override

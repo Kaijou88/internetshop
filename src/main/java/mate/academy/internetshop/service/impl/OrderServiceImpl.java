@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import mate.academy.internetshop.dao.OrderDao;
-import mate.academy.internetshop.dao.ProductDao;
-import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.lib.Service;
 import mate.academy.internetshop.model.Order;
@@ -19,10 +17,6 @@ import mate.academy.internetshop.service.ShoppingCartService;
 public class OrderServiceImpl implements OrderService {
     @Inject
     private OrderDao orderDao;
-    @Inject
-    private ProductDao productDao;
-    @Inject
-    private UserDao userDao;
     @Inject
     private ShoppingCartService shoppingCartService;
 

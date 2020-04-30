@@ -4,7 +4,7 @@
 <head>
     <title>Order details</title>
 </head>
-<br>
+<body>
 <table border="1">
     <tr>
         <th>ID</th>

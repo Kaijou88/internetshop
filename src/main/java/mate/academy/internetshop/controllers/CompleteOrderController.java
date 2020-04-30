@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import mate.academy.internetshop.lib.Injector;
+import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.service.OrderService;
 import mate.academy.internetshop.service.ShoppingCartService;
 import mate.academy.internetshop.service.UserService;
@@ -31,9 +32,9 @@ public class CompleteOrderController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        orderService.completeOrder(shoppingCartService.getByUserId(USER_ID).getProducts(),
-                userService.get(USER_ID));
+        Order order = orderService.completeOrder(
+                shoppingCartService.getByUserId(USER_ID).getProducts(), userService.get(USER_ID));
         shoppingCartService.clear(shoppingCartService.getByUserId(USER_ID));
-        resp.sendRedirect(req.getContextPath() + "/");
+        resp.sendRedirect(req.getContextPath() + "/order?id=" + order.getId());
     }
 }

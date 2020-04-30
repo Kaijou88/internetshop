@@ -12,6 +12,7 @@
 
     <button type="submit"/>Add</button>
 </form>
+    <a href="${pageContext.request.contextPath}/products/admin">All products</a> <br/>
     <a href="${pageContext.request.contextPath}/">Go to the main page</a>
 </body>
 </html>

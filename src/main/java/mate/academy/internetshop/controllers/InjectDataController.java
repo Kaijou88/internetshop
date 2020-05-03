@@ -19,8 +19,16 @@ public class InjectDataController extends HttpServlet {
 
         User bob = new User("Bob", "bob", "qwerty");
         User alisa = new User("Alisa", "alisa", "qwerty");
+        User dmytro = new User("Dmytro", "dmytro", "qwerty");
+        User tom = new User("Tom", "tom", "qwerty");
+        User ted = new User("Ted", "ted", "qwerty");
+        User kira = new User("Kira", "kira", "qwerty");
         userService.create(bob);
         userService.create(alisa);
+        userService.create(dmytro);
+        userService.create(tom);
+        userService.create(ted);
+        userService.create(kira);
         req.getRequestDispatcher("WEB-INF/views/injectData.jsp").forward(req, resp);
     }
 }

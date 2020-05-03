@@ -6,8 +6,6 @@
 <body>
     <h1>Welcome to Kitty's Paradise!</h1>
 
-    <a href="${pageContext.request.contextPath}/injectData">Inject test data into DB</a> <br/>
-
     <a href="${pageContext.request.contextPath}/injectProduct">Inject test products into DB</a> <br/> <br/>
 
     <a href="${pageContext.request.contextPath}/registration">Register</a> <br/>

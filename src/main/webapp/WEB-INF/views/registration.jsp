@@ -16,6 +16,6 @@
 
     <button type="submit"/>Register</button>
 </form>
-    <a href="${pageContext.request.contextPath}/">Go to the main page</a>
+    <a href="${pageContext.request.contextPath}/login">Sign in</a>
 </body>
 </html>

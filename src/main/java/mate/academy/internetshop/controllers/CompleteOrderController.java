@@ -12,8 +12,7 @@ import mate.academy.internetshop.service.ShoppingCartService;
 import mate.academy.internetshop.service.UserService;
 
 public class CompleteOrderController extends HttpServlet {
-    private static final Long USER_ID = 1L;
-
+    private static final String ID_USER = "user_id";
     private static final Injector INJECTOR = Injector.getInstance("mate.academy");
     private final ShoppingCartService shoppingCartService =
             (ShoppingCartService) INJECTOR.getInstance(ShoppingCartService.class);
@@ -32,9 +31,10 @@ public class CompleteOrderController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
+        Long userId = (Long) req.getSession().getAttribute(ID_USER);
         Order order = orderService.completeOrder(
-                shoppingCartService.getByUserId(USER_ID).getProducts(), userService.get(USER_ID));
-        shoppingCartService.clear(shoppingCartService.getByUserId(USER_ID));
+                shoppingCartService.getByUserId(userId).getProducts(), userService.get(userId));
+        shoppingCartService.clear(shoppingCartService.getByUserId(userId));
         resp.sendRedirect(req.getContextPath() + "/order?id=" + order.getId());
     }
 }

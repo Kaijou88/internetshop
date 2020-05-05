@@ -24,7 +24,7 @@ public class CompleteOrderController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.getRequestDispatcher("WEB-INF/views/shoppingcart.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/shoppingCart.jsp").forward(req, resp);
     }
 
     @Override
@@ -32,9 +32,15 @@ public class CompleteOrderController extends HttpServlet {
             throws ServletException, IOException {
 
         Long userId = (Long) req.getSession().getAttribute(ID_USER);
+        if (shoppingCartService.getByUserId(userId).getProducts().isEmpty()) {
+            req.setAttribute("message",
+                    "You can't finish your order. Your shopping cart is empty.");
+            req.getRequestDispatcher("/WEB-INF/views/shoppingCart.jsp").forward(req, resp);
+            return;
+        }
         Order order = orderService.completeOrder(
                 shoppingCartService.getByUserId(userId).getProducts(), userService.get(userId));
         shoppingCartService.clear(shoppingCartService.getByUserId(userId));
-        resp.sendRedirect(req.getContextPath() + "/order?id=" + order.getId());
+        resp.sendRedirect(req.getContextPath() + "/orders/details?id=" + order.getId());
     }
 }

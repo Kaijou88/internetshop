@@ -20,6 +20,6 @@ public class DeleteProductController extends HttpServlet {
         String orderId = req.getParameter("id");
         Long id = Long.valueOf(orderId);
         productService.delete(id);
-        resp.sendRedirect(req.getContextPath() + "/products/admin");
+        resp.sendRedirect(req.getContextPath() + "/products/for_admin");
     }
 }

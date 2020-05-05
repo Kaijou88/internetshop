@@ -39,6 +39,6 @@ public class InjectProductController extends HttpServlet {
         productService.create(product8);
         productService.create(product9);
         productService.create(product10);
-        req.getRequestDispatcher("WEB-INF/views/injectProduct.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/injectProduct.jsp").forward(req, resp);
     }
 }

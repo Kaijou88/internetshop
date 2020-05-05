@@ -20,6 +20,6 @@ public class GetShoppingCartController extends HttpServlet {
 
         Long userId = (Long) req.getSession().getAttribute(ID_USER);
         req.setAttribute("shoppingCart", shoppingCartService.getByUserId(userId));
-        req.getRequestDispatcher("WEB-INF/views/shoppingCart.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/shoppingCart.jsp").forward(req, resp);
     }
 }

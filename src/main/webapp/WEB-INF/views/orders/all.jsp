@@ -19,7 +19,7 @@
                 <c:out value="${order.user.id}"/>
             </td>
             <td>
-                <a href="${pageContext.request.contextPath}/order?id=${order.id}">Details</a>
+                <a href="${pageContext.request.contextPath}/orders/details?id=${order.id}">Details</a>
             </td>
             <td>
                 <a href="${pageContext.request.contextPath}/orders/delete?id=${order.id}">Delete</a>

@@ -6,7 +6,8 @@
 </head>
 <body>
 <h1>Your shopping cart</h1>
-<form method="post" action="${pageContext.request.contextPath}/shoppingcart/neworder">
+<h4 style="color:red">${message}</h4>
+<form method="post" action="${pageContext.request.contextPath}/shopping_cart/new_order">
 <table border="1">
     <tr>
         <th>ID</th>
@@ -25,7 +26,7 @@
                 <c:out value="${product.price}"/>
             </td>
             <td>
-                <a href="${pageContext.request.contextPath}/shoppingcart/delete?id=${product.id}">Delete</a>
+                <a href="${pageContext.request.contextPath}/shopping_cart/delete?id=${product.id}">Delete</a>
             </td>
         </tr>
     </c:forEach>

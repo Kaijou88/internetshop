@@ -10,8 +10,10 @@ import mate.academy.internetshop.lib.Injector;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
+import org.apache.log4j.Logger;
 
 public class RegistrationController extends HttpServlet {
+    private static final Logger LOGGER = Logger.getLogger(RegistrationController.class);
     private static final Injector INJECTOR = Injector.getInstance("mate.academy");
     private final UserService userService = (UserService) INJECTOR.getInstance(UserService.class);
 
@@ -37,6 +39,8 @@ public class RegistrationController extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/");
         } else {
             req.setAttribute("message", "Your passwords don't match to each other.");
+            LOGGER.info("Passwords: " + password + " and "
+                    + repeatPassword + " don't match to each other");
             req.getRequestDispatcher("/WEB-INF/views/registration.jsp").forward(req, resp);
         }
     }

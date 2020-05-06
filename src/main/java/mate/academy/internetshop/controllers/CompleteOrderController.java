@@ -10,8 +10,10 @@ import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.service.OrderService;
 import mate.academy.internetshop.service.ShoppingCartService;
 import mate.academy.internetshop.service.UserService;
+import org.apache.log4j.Logger;
 
 public class CompleteOrderController extends HttpServlet {
+    private static final Logger LOGGER = Logger.getLogger(CompleteOrderController.class);
     private static final String ID_USER = "user_id";
     private static final Injector INJECTOR = Injector.getInstance("mate.academy");
     private final ShoppingCartService shoppingCartService =
@@ -35,6 +37,8 @@ public class CompleteOrderController extends HttpServlet {
         if (shoppingCartService.getByUserId(userId).getProducts().isEmpty()) {
             req.setAttribute("message",
                     "You can't finish your order. Your shopping cart is empty.");
+            LOGGER.info("User with id: "
+                    + userId + " tries to finish order with empty shopping cart.");
             req.getRequestDispatcher("/WEB-INF/views/shoppingCart.jsp").forward(req, resp);
             return;
         }

@@ -10,8 +10,10 @@ import mate.academy.internetshop.exeptions.AuthenticationException;
 import mate.academy.internetshop.lib.Injector;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.security.AuthenticationService;
+import org.apache.log4j.Logger;
 
 public class LoginController extends HttpServlet {
+    private static final Logger LOGGER = Logger.getLogger(LoginController.class);
     private static final Injector INJECTOR = Injector.getInstance("mate.academy");
     private final AuthenticationService authService =
             (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
@@ -34,6 +36,8 @@ public class LoginController extends HttpServlet {
             session.setAttribute("user_id", user.getId());
         } catch (AuthenticationException e) {
             req.setAttribute("message", e.getMessage());
+            LOGGER.warn("Error: " + e.getMessage() + " with data: login - "
+                    + login + ", password - " + pwd, e);
             req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
             return;
         }

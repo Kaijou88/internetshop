@@ -37,7 +37,7 @@ public class LoginController extends HttpServlet {
         } catch (AuthenticationException e) {
             req.setAttribute("message", e.getMessage());
             LOGGER.warn("Error: " + e.getMessage() + " with data: login - "
-                    + login + ", password - " + pwd);
+                    + login + ", password - " + pwd, e);
             req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
             return;
         }

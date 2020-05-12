@@ -8,17 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import mate.academy.internetshop.controllers.RegistrationController;
 import mate.academy.internetshop.dao.ProductDao;
 import mate.academy.internetshop.exeptions.DataProcessingException;
 import mate.academy.internetshop.lib.Dao;
 import mate.academy.internetshop.model.Product;
 import mate.academy.internetshop.util.ConnectionUtil;
-import org.apache.log4j.Logger;
 
 @Dao
 public class ProductDaoJdbcImpl implements ProductDao {
-    private static final Logger LOGGER = Logger.getLogger(RegistrationController.class);
 
     @Override
     public Product create(Product element) {
@@ -35,7 +32,6 @@ public class ProductDaoJdbcImpl implements ProductDao {
             }
             return element;
         } catch (SQLException e) {
-            LOGGER.warn("Can't create new product", e);
             throw new DataProcessingException("Can't create new product");
         }
     }
@@ -52,7 +48,6 @@ public class ProductDaoJdbcImpl implements ProductDao {
             }
             return Optional.empty();
         } catch (SQLException e) {
-            LOGGER.warn("Can't find product with id: " + id, e);
             throw new DataProcessingException("Can't find product with id: " + id);
         }
 
@@ -70,7 +65,6 @@ public class ProductDaoJdbcImpl implements ProductDao {
             }
             return products;
         } catch (SQLException e) {
-            LOGGER.warn("Can't established connection to DB", e);
             throw new DataProcessingException("Can't established connection to DB");
         }
     }
@@ -87,7 +81,6 @@ public class ProductDaoJdbcImpl implements ProductDao {
             statement.executeUpdate();
             return getProductFromResultSet(statement.executeQuery()).get();
         } catch (SQLException e) {
-            LOGGER.warn("Can't update product with id: " + element.getId(), e);
             throw new DataProcessingException("Can't update product with id: " + element.getId());
         }
     }
@@ -101,7 +94,6 @@ public class ProductDaoJdbcImpl implements ProductDao {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            LOGGER.warn("Can't delete product with id: " + id, e);
             throw new DataProcessingException("Can't delete product with id: " + id);
         }
     }

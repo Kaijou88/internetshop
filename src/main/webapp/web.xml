@@ -184,16 +184,6 @@
         <url-pattern>/shopping_cart/new_order</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>injectProduct</servlet-name>
-        <servlet-class>mate.academy.internetshop.controllers.InjectProductController</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>injectProduct</servlet-name>
-        <url-pattern>/inject_products</url-pattern>
-    </servlet-mapping>
-
     <filter>
         <filter-name>authenticationFilter</filter-name>
         <filter-class>mate.academy.internetshop.web.filters.AuthenticationFilter</filter-class>

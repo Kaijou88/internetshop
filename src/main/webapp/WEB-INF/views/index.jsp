@@ -8,8 +8,6 @@
 
     <a href="${pageContext.request.contextPath}/logout">Logout</a> <br/> <br/>
 
-    <a href="${pageContext.request.contextPath}/inject_products">Inject test products into DB</a> <br/> <br/>
-
     <a href="${pageContext.request.contextPath}/users/all">All users</a> <br/> <br/>
 
     <a href="${pageContext.request.contextPath}/products/add_new">Add products</a> <br/>

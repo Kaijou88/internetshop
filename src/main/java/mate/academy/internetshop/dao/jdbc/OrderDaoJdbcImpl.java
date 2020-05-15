@@ -9,21 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import mate.academy.internetshop.dao.OrderDao;
+import mate.academy.internetshop.dao.UserDao;
 import mate.academy.internetshop.exeptions.DataProcessingException;
 import mate.academy.internetshop.lib.Dao;
-import mate.academy.internetshop.lib.Injector;
+import mate.academy.internetshop.lib.Inject;
 import mate.academy.internetshop.model.Order;
 import mate.academy.internetshop.model.Product;
-import mate.academy.internetshop.service.UserService;
 import mate.academy.internetshop.util.ConnectionUtil;
 import org.apache.log4j.Logger;
 
 @Dao
 public class OrderDaoJdbcImpl implements OrderDao {
     private static final Logger LOGGER = Logger.getLogger(OrderDaoJdbcImpl.class);
-    private static final Injector INJECTOR = Injector.getInstance("mate.academy");
-    private final UserService userService =
-            (UserService) INJECTOR.getInstance(UserService.class);
+    @Inject
+    private UserDao userDao;
 
     @Override
     public Order create(Order element) {
@@ -36,12 +35,12 @@ public class OrderDaoJdbcImpl implements OrderDao {
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
             element.setId(resultSet.getLong(1));
-            insertToOrdersProducts(element);
-            LOGGER.info("Order created with id: " + element.getId() + ". Exit from Order create()");
-            return element;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't create new order");
         }
+        insertToOrdersProducts(element);
+        LOGGER.info("Order created with id: " + element.getId() + ". Exit from Order create()");
+        return element;
     }
 
     @Override
@@ -78,19 +77,9 @@ public class OrderDaoJdbcImpl implements OrderDao {
 
     @Override
     public Order update(Order element) {
-        String query1 = "UPDATE orders SET user_id = ? WHERE order_id = ?";
-        try (Connection connection = ConnectionUtil.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(query1);
-            statement.setLong(1, element.getUser().getId());
-            statement.setLong(2, element.getId());
-            statement.executeUpdate();
-            deleteFromOrdersProducts(element);
-            insertToOrdersProducts(element);
-            return element;
-        } catch (SQLException e) {
-            throw new DataProcessingException("Can't update product "
-                    + "in shopping cart of user with id: " + element.getUser().getId());
-        }
+        deleteFromOrdersProducts(element);
+        insertToOrdersProducts(element);
+        return element;
     }
 
     @Override
@@ -117,28 +106,28 @@ public class OrderDaoJdbcImpl implements OrderDao {
                 + "WHERE orders_products.order_id = ?";
 
         List<Product> products = new ArrayList<>();
-        Connection connection = ConnectionUtil.getConnection();
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setLong(1, orderId);
-        ResultSet resultSetOfProducts = statement.executeQuery();
-        while (resultSetOfProducts.next()) {
-            Long productId = resultSetOfProducts.getLong("product_id");
-            String name = resultSetOfProducts.getString("product_name");
-            BigDecimal price = resultSetOfProducts.getBigDecimal("product_price");
-            Product product = new Product(name, price);
-            product.setId(productId);
-            products.add(product);
+        try (Connection connection = ConnectionUtil.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setLong(1, orderId);
+            ResultSet resultSetOfProducts = statement.executeQuery();
+            while (resultSetOfProducts.next()) {
+                Long productId = resultSetOfProducts.getLong("product_id");
+                String name = resultSetOfProducts.getString("product_name");
+                BigDecimal price = resultSetOfProducts.getBigDecimal("product_price");
+                Product product = new Product(name, price);
+                product.setId(productId);
+                products.add(product);
+            }
         }
-
-        Order order = new Order(userService.get(userId), products);
+        Order order = new Order(userDao.get(userId).get(), products);
         order.setId(orderId);
         return Optional.of(order);
     }
 
     public void deleteFromOrdersProducts(Order element) {
-        String query2 = "DELETE FROM orders_products WHERE order_id = ?";
+        String query = "DELETE FROM orders_products WHERE order_id = ?";
         try (Connection connection = ConnectionUtil.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(query2);
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.setLong(1, element.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -148,9 +137,9 @@ public class OrderDaoJdbcImpl implements OrderDao {
     }
 
     public void insertToOrdersProducts(Order element) {
-        String query3 = "INSERT INTO orders_products (order_id, product_id) VALUES (?, ?)";
+        String query = "INSERT INTO orders_products (order_id, product_id) VALUES (?, ?)";
         try (Connection connection = ConnectionUtil.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(query3);
+            PreparedStatement statement = connection.prepareStatement(query);
             for (Product product : element.getProducts()) {
                 statement.setLong(1, element.getId());
                 statement.setLong(2, product.getId());

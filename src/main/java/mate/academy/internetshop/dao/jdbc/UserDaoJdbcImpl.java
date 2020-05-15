@@ -22,10 +22,10 @@ public class UserDaoJdbcImpl implements UserDao {
     public Optional<User> findByLogin(String login) {
         String query = "SELECT users.user_id, users.name, users.login, "
                 + "users.password, roles.role_name "
-                + "FROM internetshop.users "
-                + "JOIN internetshop.users_roles "
+                + "FROM users "
+                + "JOIN users_roles "
                 + "ON users.user_id = users_roles.user_id "
-                + "JOIN internetshop.roles "
+                + "JOIN roles "
                 + "ON users_roles.role_id = roles.role_id "
                 + "WHERE login = ?";
         try (Connection connection = ConnectionUtil.getConnection()) {
@@ -66,10 +66,10 @@ public class UserDaoJdbcImpl implements UserDao {
     public Optional<User> get(Long id) {
         String query = "SELECT users.user_id, users.name, users.login, "
                 + "users.password, roles.role_name "
-                + "FROM internetshop.users "
-                + "JOIN internetshop.users_roles "
+                + "FROM users "
+                + "JOIN users_roles "
                 + "ON users.user_id = users_roles.user_id "
-                + "JOIN internetshop.roles "
+                + "JOIN roles "
                 + "ON users_roles.role_id = roles.role_id "
                 + "WHERE users.user_id = ?";
         try (Connection connection = ConnectionUtil.getConnection()) {
@@ -89,10 +89,10 @@ public class UserDaoJdbcImpl implements UserDao {
     public List<User> getAll() {
         String query = "SELECT users.user_id, users.name, users.login, "
                 + "users.password, roles.role_name "
-                + "FROM internetshop.users "
-                + "JOIN internetshop.users_roles "
+                + "FROM users "
+                + "JOIN users_roles "
                 + "ON users.user_id = users_roles.user_id "
-                + "JOIN internetshop.roles "
+                + "JOIN roles "
                 + "ON users_roles.role_id = roles.role_id";
         List<User> users = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection()) {
@@ -147,12 +147,25 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     public Optional<User> getUserFromResultSet(ResultSet resultSet) throws SQLException {
+        String query = "SELECT roles.role_name "
+                + "FROM users_roles "
+                + "INNER JOIN roles "
+                + "ON users_roles.role_id = roles.role_id "
+                + "WHERE users_roles.user_id = ?";
+        Set<Role> roleName = new HashSet<>();
         long userId = resultSet.getLong("user_id");
+        try (Connection connection = ConnectionUtil.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setLong(1, userId);
+            ResultSet resultSetOfRoles = statement.executeQuery();
+            while (resultSetOfRoles.next()) {
+                String name = resultSetOfRoles.getString("role_name");
+                roleName.add(Role.of(name));
+            }
+        }
         String userName = resultSet.getString("name");
         String login = resultSet.getString("login");
         String password = resultSet.getString("password");
-        Set<Role> roleName = new HashSet<>();
-        roleName.add(Role.of(resultSet.getString("role_name")));
         User user = new User(userName, login, password);
         user.setId(userId);
         user.setRoles(roleName);
@@ -160,7 +173,7 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     public void setUserRole(User user) {
-        String query = "INSERT INTO internetshop.users_roles (user_id, role_id) VALUE (?, ?)";
+        String query = "INSERT INTO users_roles (user_id, role_id) VALUE (?, ?)";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement statement =
                     connection.prepareStatement(query);

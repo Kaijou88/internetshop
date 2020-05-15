@@ -99,6 +99,13 @@ public class OrderDaoJdbcImpl implements OrderDao {
             throws SQLException {
         long orderId = resultSet.getLong("order_id");
         long userId = resultSet.getLong("user_id");
+        List<Product> products = getProductsForResultSet(orderId);
+        Order order = new Order(userDao.get(userId).get(), products);
+        order.setId(orderId);
+        return Optional.of(order);
+    }
+
+    public List<Product> getProductsForResultSet(Long orderId) {
         String query = "SELECT products.product_id, products.product_name, products.product_price "
                 + "FROM orders_products "
                 + "INNER JOIN products "
@@ -118,10 +125,11 @@ public class OrderDaoJdbcImpl implements OrderDao {
                 product.setId(productId);
                 products.add(product);
             }
+            return products;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get products "
+                    + "from order with id: " + orderId);
         }
-        Order order = new Order(userDao.get(userId).get(), products);
-        order.setId(orderId);
-        return Optional.of(order);
     }
 
     public void deleteFromOrdersProducts(Order element) {

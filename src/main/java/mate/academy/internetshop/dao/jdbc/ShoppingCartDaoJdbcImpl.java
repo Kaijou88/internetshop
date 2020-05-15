@@ -116,6 +116,12 @@ public class ShoppingCartDaoJdbcImpl implements ShoppingCartDao {
         long userId = resultSet.getLong("user_id");
         ShoppingCart shoppingCart = new ShoppingCart(userDao.get(userId).get());
         shoppingCart.setId(shoppingCartId);
+        List<Product> products = getProductsForResultSet(shoppingCartId);
+        shoppingCart.setProducts(products);
+        return Optional.of(shoppingCart);
+    }
+
+    public List<Product> getProductsForResultSet(Long shoppingCartId) {
         String query = "SELECT products.product_id, products.product_name, products.product_price "
                 + "FROM shopping_carts_products "
                 + "INNER JOIN products "
@@ -136,9 +142,11 @@ public class ShoppingCartDaoJdbcImpl implements ShoppingCartDao {
                 product.setId(productId);
                 products.add(product);
             }
+            return products;
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get products "
+                    + "from shopping cart with id: " + shoppingCartId);
         }
-        shoppingCart.setProducts(products);
-        return Optional.of(shoppingCart);
     }
 
     public void deleteFromShoppingCartsProducts(ShoppingCart element) {

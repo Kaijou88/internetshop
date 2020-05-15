@@ -50,7 +50,6 @@ public class ProductDaoJdbcImpl implements ProductDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Can't find product with id: " + id);
         }
-
     }
 
     @Override
@@ -71,7 +70,7 @@ public class ProductDaoJdbcImpl implements ProductDao {
 
     @Override
     public Product update(Product element) {
-        String query = "UPDATE FROM products "
+        String query = "UPDATE products "
                 + "SET product_name = ?, product_price = ? WHERE product_id = ?";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);

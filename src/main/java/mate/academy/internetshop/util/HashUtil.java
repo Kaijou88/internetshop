@@ -4,10 +4,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import mate.academy.internetshop.exeptions.DataProcessingException;
-import org.apache.log4j.Logger;
 
 public class HashUtil {
-    private static Logger LOGGER = Logger.getLogger(HashUtil.class);
 
     public static byte[] getSalt() {
         SecureRandom random = new SecureRandom();
@@ -28,7 +26,6 @@ public class HashUtil {
             }
             return hashedPassword.toString();
         } catch (NoSuchAlgorithmException e) {
-            LOGGER.error("Can't hash password", e);
             throw new DataProcessingException("Can't hash password");
         }
     }

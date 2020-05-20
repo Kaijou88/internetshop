@@ -21,7 +21,7 @@ public class UserDaoJdbcImpl implements UserDao {
     @Override
     public Optional<User> findByLogin(String login) {
         String query = "SELECT users.user_id, users.name, users.login, "
-                + "users.password, roles.role_name "
+                + "users.password, users.salt, roles.role_name "
                 + "FROM users "
                 + "JOIN users_roles "
                 + "ON users.user_id = users_roles.user_id "
@@ -43,13 +43,14 @@ public class UserDaoJdbcImpl implements UserDao {
 
     @Override
     public User create(User element) {
-        String query = "INSERT INTO users (name, login, password) VALUE (?, ?, ?)";
+        String query = "INSERT INTO users (name, login, password, salt) VALUE (?, ?, ?, ?)";
         try (Connection connection = ConnectionUtil.getConnection()) {
             PreparedStatement statement =
                     connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setString(1, element.getName());
             statement.setString(2, element.getLogin());
             statement.setString(3, element.getPassword());
+            statement.setBytes(4, element.getSalt());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -65,7 +66,7 @@ public class UserDaoJdbcImpl implements UserDao {
     @Override
     public Optional<User> get(Long id) {
         String query = "SELECT users.user_id, users.name, users.login, "
-                + "users.password, roles.role_name "
+                + "users.password, users.salt, roles.role_name "
                 + "FROM users "
                 + "JOIN users_roles "
                 + "ON users.user_id = users_roles.user_id "
@@ -88,7 +89,7 @@ public class UserDaoJdbcImpl implements UserDao {
     @Override
     public List<User> getAll() {
         String query = "SELECT users.user_id, users.name, users.login, "
-                + "users.password, roles.role_name "
+                + "users.password, users.salt, roles.role_name "
                 + "FROM users "
                 + "JOIN users_roles "
                 + "ON users.user_id = users_roles.user_id "
@@ -166,7 +167,8 @@ public class UserDaoJdbcImpl implements UserDao {
         String userName = resultSet.getString("name");
         String login = resultSet.getString("login");
         String password = resultSet.getString("password");
-        User user = new User(userName, login, password);
+        byte[] salt = resultSet.getBytes("salt");
+        User user = new User(userName, login, password, salt);
         user.setId(userId);
         user.setRoles(roleName);
         return Optional.of(user);

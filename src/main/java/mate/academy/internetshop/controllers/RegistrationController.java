@@ -10,6 +10,7 @@ import mate.academy.internetshop.lib.Injector;
 import mate.academy.internetshop.model.Role;
 import mate.academy.internetshop.model.User;
 import mate.academy.internetshop.service.UserService;
+import mate.academy.internetshop.util.HashUtil;
 
 public class RegistrationController extends HttpServlet {
     private static final Injector INJECTOR = Injector.getInstance("mate.academy");
@@ -31,7 +32,9 @@ public class RegistrationController extends HttpServlet {
         String repeatPassword = req.getParameter("pwd-repeat");
 
         if (password.equals(repeatPassword)) {
-            User user = new User(name, login, password);
+            byte[] salt = HashUtil.getSalt();
+            String hashedPassword = HashUtil.hashPassword(password, salt);
+            User user = new User(name, login, hashedPassword, salt);
             user.setRoles(Set.of(Role.of("USER")));
             userService.create(user);
             resp.sendRedirect(req.getContextPath() + "/");

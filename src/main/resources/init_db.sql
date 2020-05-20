@@ -53,6 +53,7 @@ CREATE TABLE `internetshop`.`users` (
   `name` varchar(256) NOT NULL,
   `login` varchar(256) NOT NULL,
   `password` varchar(256) NOT NULL,
+  `salt` varbinary(500) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `login_UNIQUE` (`login`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;

@@ -31,7 +31,7 @@
         </tr>
     </c:forEach>
 </table>
-<button type="submit"/>Buy</button> </br>
+<button type="submit">Buy</button> </br>
 </form>
     <a href="${pageContext.request.contextPath}/">Go to the main page</a>
 </body>

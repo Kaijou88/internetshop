@@ -10,7 +10,7 @@
     Name: <input type="text" name="name"/> <br/>
     Price: <input type="number" name="price"/> <br/>
 
-    <button type="submit"/>Add</button>
+    <button type="submit">Add</button>
 </form>
     <a href="${pageContext.request.contextPath}/products/for_admin">All products</a> <br/>
     <a href="${pageContext.request.contextPath}/">Go to the main page</a>

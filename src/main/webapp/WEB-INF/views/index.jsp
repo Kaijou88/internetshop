@@ -4,7 +4,9 @@
     <title>Kitty's Paradise</title>
 </head>
 <body>
-    <h1>Welcome to Kitty's Paradise!</h1>
+    <h1>Welcome to Cat's Paradise!</h1>
+
+    <a href="${pageContext.request.contextPath}/inject_products">Inject test products into DB</a> <br/>
 
     <a href="${pageContext.request.contextPath}/logout">Logout</a> <br/> <br/>
 

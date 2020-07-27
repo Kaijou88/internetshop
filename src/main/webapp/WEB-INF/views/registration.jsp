@@ -14,7 +14,7 @@
     Password: <input type="password" name="pwd"/> <br/>
     Verify password: <input type="password" name="pwd-repeat"/> <br/>
 
-    <button type="submit"/>Register</button>
+    <button type="submit">Register</button>
 </form>
     <a href="${pageContext.request.contextPath}/login">Sign in</a>
 </body>

@@ -3,13 +3,13 @@
 ![Header Image](src/images/cat_logo_internetshop.jpg)
 
 # Context
-[Project's purpose] (#purpose)
+[Project's purpose](#purpose)
 
-[Project's structure] (#structure)
+[Project's structure](#structure)
 
-[For developer] (#developer)
+[For developer](#developer)
 
-[Author] (#author)
+[Author](#author)
 
 # <a name="purpose"></a>Project's purpose
 The internet shop is a simple version of a real one. 

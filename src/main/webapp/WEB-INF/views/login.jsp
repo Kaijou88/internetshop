@@ -12,8 +12,10 @@
     Login: <input type="text" name="login"/> <br/>
     Password: <input type="password" name="pwd"/> <br/>
 
-    <button type="submit"/>Sign in</button>
+    <button type="submit">Sign in</button>
 </form> <br/>
+    <a href="${pageContext.request.contextPath}/inject_data">Inject test data into DB</a> <br/>
+
     Don't have an account?
     <a href="${pageContext.request.contextPath}/registration">Registration</a>
 </body>

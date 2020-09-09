@@ -1,6 +1,6 @@
-# Internet Shop
+# Online Shop
 
-![Header Image](src/images/cat_logo_internetshop.jpg)
+![Header Image](src/images/cat_logo_onlineshop.jpg)
 
 # Context
 [Project's purpose](#purpose)
@@ -12,8 +12,8 @@
 [Author](#author)
 
 # <a name="purpose"></a>Project's purpose
-The internet shop is a simple version of a real one. 
-This internet shop has the following functionality:
+The online shop is a simple version of a real one. 
+This online shop has the following functionality:
 - Registration of new user with USER role only, login and logout;
 - User with ADMIN role can add new products and delete them;
 - User with USER role can add products from list of products into the bucket and place an order;
